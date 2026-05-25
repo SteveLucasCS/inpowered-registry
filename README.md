@@ -1,0 +1,2 @@
+# inpowered-registry
+InPoweredCoaches
