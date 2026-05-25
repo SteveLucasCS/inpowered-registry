@@ -110,7 +110,7 @@ function renderCards(list) {
     const idx = coaches.indexOf(c);
     const active = Object.entries(c.methods).filter(([,v])=>v).map(([k])=>k);
     const pills = active.length ? active.map(m=>`<span class="tag method-tag">${m}</span>`).join('') : `<span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300">None on file</span>`;
-    return `<div class="card" onclick="openModal(${idx})">
+    return `<div class="card">
       <div class="card-top">
         <div class="avatar">${initials(c.name)}</div>
         <div class="card-identity">
