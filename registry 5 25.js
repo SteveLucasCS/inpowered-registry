@@ -117,7 +117,7 @@ function renderCards(list) {
           <div class="card-name">${c.name}</div>
           <div class="card-business">${c.business}</div>
           ${c.location ? `<div class="card-location">&#128205; ${c.location}</div>` : ''}
-          <span class="icf-badge ${icfCls(c.icf)}"><span class="icf-dot"></span>${icf}</span>
+          <span class="icf-badge ${icfCls(c.icf)}" style="cursor:default;pointer-events:none;"><span class="icf-dot"></span>${icf}</span>
         </div>
       </div>
       <div class="card-body">
@@ -125,10 +125,11 @@ function renderCards(list) {
         <div class="section-label">QE / InPowered&#174; Licenses</div>
         <div class="tags">${pills}</div>
       </div>
-      <div class="card-footer">
+      <div class="card-footer" style="justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300;">Click card for full profile</span>
         <div class="contact-links">
-          <a class="contact-link" href="mailto:${c.email}" onclick="event.stopPropagation()">Email</a>
-          ${c.website ? `<a class="contact-link" href="${c.website}" target="_blank" onclick="event.stopPropagation()">Website</a>` : ''}
+          <a class="contact-link" href="mailto:${c.email}" onclick="event.stopPropagation()" style="background:#1B3A6B;color:#fff;border-color:#1B3A6B;font-weight:600;">&#9993; Email</a>
+          ${c.website ? `<a class="contact-link" href="${c.website}" target="_blank" onclick="event.stopPropagation()" style="background:#C9A84C;color:#122850;border-color:#C9A84C;font-weight:600;">&#8599; Website</a>` : ''}
         </div>
       </div>
     </div>`;
@@ -160,7 +161,7 @@ function openModal(idx) {
   document.getElementById('mName').textContent = c.name;
   document.getElementById('mBusiness').textContent = c.business;
   document.getElementById('mLoc').textContent = c.location ? '&#128205; ' + c.location : '';
-  document.getElementById('mBadge').innerHTML = `<span class="icf-badge ${icfCls(c.icf)}" style="display:inline-flex"><span class="icf-dot"></span>${c.icfNote||c.icf||'-'}</span>`;
+  document.getElementById('mBadge').innerHTML = `<span class="icf-badge ${icfCls(c.icf)}" style="display:inline-flex;cursor:default;"><span class="icf-dot"></span>${c.icfNote||c.icf||'-'}</span>`;
   document.getElementById('mWhyYou').textContent = c.whyYou;
   const bioSec = document.getElementById('mBioSec');
   if (c.bio) { document.getElementById('mBio').textContent = c.bio; bioSec.style.display=''; } else { bioSec.style.display='none'; }
@@ -171,8 +172,8 @@ function openModal(idx) {
     `<div class="license-row ${v?'licensed':'unlicensed'}"><span class="lcheck ${v?'yes':'no'}">${v?'&#10003;':'-'}</span><span class="lname">${n}</span></div>`
   ).join('');
   document.getElementById('mLinks').innerHTML =
-    `<a class="mbtn mbtn-primary" href="mailto:${c.email}">Email ${c.name.split(' ')[0]}</a>` +
-    (c.website ? `<a class="mbtn mbtn-ghost" href="${c.website}" target="_blank">Visit Website &#8594;</a>` : '');
+    `<a class="mbtn mbtn-primary" href="mailto:${c.email}">&#9993; Email ${c.name.split(' ')[0]}</a>` +
+    (c.website ? `<a class="mbtn mbtn-ghost" href="${c.website}" target="_blank">&#8599; Visit Website</a>` : '');
   document.getElementById('modalOverlay').classList.add('open');
 }
 
