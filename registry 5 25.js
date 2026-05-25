@@ -110,7 +110,7 @@ function renderCards(list) {
     const idx = coaches.indexOf(c);
     const active = Object.entries(c.methods).filter(([,v])=>v).map(([k])=>k);
     const pills = active.length ? '<ul style="list-style:none;margin:0;padding:0;">' + active.map(m=>`<li style="font-size:11px;color:#4A4A48;font-weight:400;padding:2px 0;display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:#C9A84C;display:inline-block;flex-shrink:0;"></span>${m}</li>`).join('') + '</ul>' : `<span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300">None on file</span>`;
-    return `<div class="card" onclick="openModal(${idx})">
+    return `<div class="card">
       <div class="card-top">
         <div class="avatar">${initials(c.name)}</div>
         <div class="card-identity">
