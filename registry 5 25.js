@@ -32,7 +32,7 @@ function renderIndex(list) {
       </thead>
       <tbody>
         ${list.map((c, i) => `
-          <tr style="border-bottom:0.5px solid #C8C5BB;cursor:pointer;transition:background 0.15s;" 
+          <tr onclick="openModal(${coaches.indexOf(c)})" style="border-bottom:0.5px solid #C8C5BB;cursor:pointer;transition:background 0.15s;" 
               onmouseover="this.style.background='#EEF2F9'" onmouseout="this.style.background='${i%2===0?'#fff':'#FAFAF8'}'">
             <td style="padding:10px 20px;background:${i%2===0?'#fff':'#FAFAF8'};">
               <span style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:#1B3A6B;">${c.name}</span>
@@ -61,7 +61,7 @@ function renderCards(list) {
     const pills = active.length
       ? '<ul style="list-style:none;margin:0;padding:0;">' + active.map(m=>`<li style="font-size:11px;color:#4A4A48;font-weight:400;padding:2px 0;display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:#C9A84C;display:inline-block;flex-shrink:0;"></span>${m}</li>`).join('') + '</ul>'
       : `<span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300">None on file</span>`;
-    return `<div class="card">
+    return `<div class="card" onclick="openModal(${idx})">
       <div class="card-top">
         <div class="avatar">${initials(c.name)}</div>
         <div class="card-identity">
