@@ -5,19 +5,63 @@ let F = { icf:'all', method:'all', region:'all' };
 const initials = n => n.split(' ').slice(0,2).map(x=>x[0]).join('');
 const icfCls = i => !i?'icf-none':i.includes('MCC')?'icf-mcc':i.includes('PCC')?'icf-pcc':i.includes('ACC')?'icf-acc':'icf-none';
 
+function renderIndex(list) {
+  let el = document.getElementById('coachIndex');
+  if (!el) {
+    const gc = document.querySelector('.grid-container');
+    const div = document.createElement('div');
+    div.id = 'coachIndex';
+    div.style.cssText = 'background:#fff;border:0.5px solid #C8C5BB;border-radius:3px;margin-bottom:22px;overflow:hidden;';
+    gc.insertBefore(div, gc.firstChild);
+    el = div;
+  }
+  if (!list.length) { el.style.display='none'; return; }
+  el.style.display='';
+  el.innerHTML = `
+    <div style="padding:12px 20px;background:#1B3A6B;border-bottom:2px solid #C9A84C;display:flex;align-items:center;gap:10px;">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#fff;letter-spacing:0.02em;">Registry Index</span>
+      <span style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:300;">${list.length} coaches — click any name to view full profile</span>
+    </div>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:#F5F4F0;border-bottom:0.5px solid #C8C5BB;">
+          <th style="padding:8px 20px;text-align:left;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A48;">Name</th>
+          <th style="padding:8px 20px;text-align:left;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A48;">Location</th>
+          <th style="padding:8px 20px;text-align:left;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A48;">ICF Credential</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map((c, i) => `
+          <tr onclick="openModal(${coaches.indexOf(c)})" style="border-bottom:0.5px solid #C8C5BB;cursor:pointer;transition:background 0.15s;" 
+              onmouseover="this.style.background='#EEF2F9'" onmouseout="this.style.background='${i%2===0?'#fff':'#FAFAF8'}'">
+            <td style="padding:10px 20px;background:${i%2===0?'#fff':'#FAFAF8'};">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:#1B3A6B;">${c.name}</span>
+            </td>
+            <td style="padding:10px 20px;font-size:12px;color:#4A4A48;font-weight:300;background:${i%2===0?'#fff':'#FAFAF8'};">&#128205; ${c.location||'—'}</td>
+            <td style="padding:10px 20px;background:${i%2===0?'#fff':'#FAFAF8'};">
+              <span class="icf-badge ${icfCls(c.icf)}" style="cursor:default;pointer-events:none;"><span class="icf-dot"></span>${c.icfNote||c.icf||'—'}</span>
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
 function renderCards(list) {
   document.getElementById('visibleCount').textContent = list.length;
   document.getElementById('totalCountCtrl').textContent = coaches.length;
   const empty = document.getElementById('emptyState');
   const grid = document.getElementById('coachGrid');
+  renderIndex(list);
   if (!list.length) { grid.innerHTML=''; empty.style.display='block'; return; }
   empty.style.display='none';
   grid.innerHTML = list.map(c => {
     const icf = c.icfNote || c.icf || '-';
     const idx = coaches.indexOf(c);
     const active = Object.entries(c.methods).filter(([,v])=>v).map(([k])=>k);
-    const pills = active.length ? '<ul style="list-style:none;margin:0;padding:0;">' + active.map(m=>`<li style="font-size:11px;color:#4A4A48;font-weight:400;padding:2px 0;display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:#C9A84C;display:inline-block;flex-shrink:0;"></span>${m}</li>`).join('') + '</ul>' : `<span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300">None on file</span>`;
-    return `<div class="card">
+    const pills = active.length
+      ? '<ul style="list-style:none;margin:0;padding:0;">' + active.map(m=>`<li style="font-size:11px;color:#4A4A48;font-weight:400;padding:2px 0;display:flex;align-items:center;gap:6px;"><span style="width:5px;height:5px;border-radius:50%;background:#C9A84C;display:inline-block;flex-shrink:0;"></span>${m}</li>`).join('') + '</ul>'
+      : `<span style="font-size:11px;color:#9A9895;font-style:italic;font-weight:300">None on file</span>`;
+    return `<div class="card" onclick="openModal(${idx})">
       <div class="card-top">
         <div class="avatar">${initials(c.name)}</div>
         <div class="card-identity">
